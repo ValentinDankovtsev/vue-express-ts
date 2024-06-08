@@ -11,10 +11,10 @@ const count = ref(0)
   <div class="card">
     <button type="button" @click="count++">count is {{ count }}</button>
   </div>
-  <input type="text" v-model="count" />
+  <input v-model="count" type="text" />
   <p>
     Check out
-    <a                 href="https://vuejs.org/guide/quick-start.html#local" target="_blank">create-vue</a>, the official Vue + Vite
+    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank">create-vue</a>, the official Vue + Vite
     starter
   </p>
   <p>
