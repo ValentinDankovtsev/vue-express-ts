@@ -21,7 +21,7 @@ export default defineConfig({
     ]
   },
   server: {
-    port: +config.PORT,
+    port: config.PORT,
     proxy: {
       '^/(api|images|webfonts|favicon)': {
         target: `http://localhost:${config.PORT}`,

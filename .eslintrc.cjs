@@ -19,7 +19,7 @@ module.exports = {
     sourceType: 'module',
     ecmaFeatures: {
       jsx: true,
-      tsx: true
+      tsx: true,
     }
   },
   rules: {
