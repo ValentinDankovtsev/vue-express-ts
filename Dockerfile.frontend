@@ -1,0 +1,20 @@
+# Используем образ Node.js
+FROM node:16
+
+# Устанавливаем рабочую директорию
+WORKDIR /app/frontend
+
+# Копируем package.json и package-lock.json
+COPY ./app/frontend/package.json ./app/frontend/package-lock.json ./
+
+# Устанавливаем зависимости
+RUN npm install
+
+# Копируем остальные файлы
+COPY ./app/frontend/src ./src
+
+# Открываем порт (например, 3000)
+EXPOSE 3000
+
+# Запускаем Vite в режиме разработки
+CMD ["npm", "run", "dev"]

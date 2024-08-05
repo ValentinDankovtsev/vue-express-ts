@@ -7,16 +7,16 @@ const { parsed: config = {} } = dotenv.config()
 export default defineConfig({
   plugins: [vue()],
   publicDir: false,
-  root: `${process.cwd()}/app/frontend`,
+  root: process.cwd() + '/app/frontend',
   resolve: {
     alias: [
       {
         find: /^@\/(.*)$/,
-        replacement: `${process.cwd()}/app/frontend/src/$1`
+        replacement: process.cwd() + '/app/frontend/src/$1'
       },
       {
         find: /^shared\/(.*)$/,
-        replacement: `${process.cwd()}/app/shared/$1`
+        replacement: process.cwd() + '/app/shared/$1'
       }
     ]
   },
