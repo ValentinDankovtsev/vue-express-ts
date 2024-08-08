@@ -1,10 +1,16 @@
+
+ export type ErrorDetail = {
+  [key: string]: string[];
+};
+
+
 export class HttpException extends Error {
   public status: number;
-  public message: string;
+  public errors: ErrorDetail[];
 
-  constructor(status: number, message: string) {
-    super(message);
+  constructor(status: number, errors: ErrorDetail[]) {
+    super();
     this.status = status;
-    this.message = message;
+    this.errors = errors;
   }
 }
