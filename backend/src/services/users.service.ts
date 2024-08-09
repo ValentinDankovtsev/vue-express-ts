@@ -48,7 +48,7 @@ export class UserService {
     )`,
       [email],
     );
-    if (rows[0].exists) throw new HttpException(409, `This email ${email} already exists`);
+    if (rows[0].exists) throw new HttpException(409, [{ auth: [`This email ${email} already exists`] }]);
 
     const hashedPassword = await hash(password, 10);
     const { rows: createUserData } = await pg.query(
