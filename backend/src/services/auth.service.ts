@@ -54,7 +54,7 @@ export class AuthService {
     return signUpUserData[0];
   }
 
-  public async login(userData: User): Promise<{ cookie: string; findUser: User }> {
+  public async login(userData: User): Promise<{ cookie: string; findUser: User; token: string }> {
     const { email, password } = userData;
 
     const { rows, rowCount } = await pg.query(
@@ -69,14 +69,13 @@ export class AuthService {
     `,
       [email],
     );
-    if (!rowCount) throw new HttpException(409, `This email ${email} was not found`);
+    if (!rowCount) throw new HttpException(409, [{ auth: [`This email ${email} was not found`] }]);
 
     const isPasswordMatching: boolean = await compare(password, rows[0].password);
-    if (!isPasswordMatching) throw new HttpException(409, "You're password not matching");
-
+    if (!isPasswordMatching) throw new HttpException(409, [{ auth: ["You're password not matching"] }]);
     const tokenData = createToken(rows[0]);
     const cookie = createCookie(tokenData);
-    return { cookie, findUser: rows[0] };
+    return { cookie, findUser: rows[0], token: tokenData.token };
   }
 
   public async logout(userData: User): Promise<User> {

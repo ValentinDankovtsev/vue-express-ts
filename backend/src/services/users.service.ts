@@ -13,6 +13,8 @@ export class UserService {
     FROM
       users
     `);
+
+    console.log(rows, 'rows')
     return rows;
   }
 
@@ -28,7 +30,7 @@ export class UserService {
     `,
       [userId],
     );
-    if (!rowCount) throw new HttpException(409, "User doesn't exist");
+    if (!rowCount) throw new HttpException(409, [{ user: ["User doesn't exist"] }]);
 
     return rows[0];
   }
@@ -48,7 +50,7 @@ export class UserService {
     )`,
       [email],
     );
-    if (rows[0].exists) throw new HttpException(409, [{ auth: [`This email ${email} already exists`] }]);
+    if (rows[0].exists) throw new HttpException(409, [{ user: [`This email ${email} already exists`] }]);
 
     const hashedPassword = await hash(password, 10);
     const { rows: createUserData } = await pg.query(
@@ -80,7 +82,7 @@ export class UserService {
       )`,
       [userId],
     );
-    if (findUser[0].exists) throw new HttpException(409, "User doesn't exist");
+    if (findUser[0].exists) throw new HttpException(409, [{ user: ["User doesn't exist"] }]);
 
     const { email, password } = userData;
     const hashedPassword = await hash(password, 10);
@@ -114,7 +116,7 @@ export class UserService {
       )`,
       [userId],
     );
-    if (findUser[0].exists) throw new HttpException(409, "User doesn't exist");
+    if (findUser[0].exists) throw new HttpException(409, [{ user: ["User doesn't exist"] }]);
 
     const { rows: deleteUserData } = await pg.query(
       `
