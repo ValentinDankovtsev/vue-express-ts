@@ -17,7 +17,7 @@ export class BookRoute implements Routes {
   private initializeRoutes() {
     this.router.get(`${this.path}`, this.book.getBooks);
     this.router.get(`${this.path}/:id(\\d+)`, this.book.getBookById);
-    this.router.post(`${this.path}`, [AuthMiddleware, ValidationMiddleware(CreateBookDto)], this.book.createBook);
+    this.router.post(`${this.path}`, [ValidationMiddleware(CreateBookDto)], this.book.createBook);
     this.router.put(`${this.path}/:id(\\d+)`, this.book.updateBook);
     this.router.delete(`${this.path}/:id(\\d+)`, this.book.deleteBook);
   }

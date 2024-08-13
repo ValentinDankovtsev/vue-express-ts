@@ -3,6 +3,7 @@ import { Service } from 'typedi';
 import pg from '@database';
 import { HttpException } from '@exceptions/httpException';
 import { Book } from '@interfaces/books.interface';
+import {saveThumbnail} from "@utils/saveImage";
 
 @Service()
 export class BooksService {
@@ -34,7 +35,7 @@ export class BooksService {
   }
 
   public async createBook(bookData: Book): Promise<Book> {
-    const { description, title } = bookData;
+    const { description, title, thumbnail } = bookData;
     const { rows } = await pg.query(
       `
     SELECT EXISTS(
@@ -49,17 +50,22 @@ export class BooksService {
     );
     if (rows[0].exists) throw new HttpException(409, [{ title: [`This title ${title} already exists`] }]);
 
+
+    // Загрузка изображения на сервер
+    const imageUrl = await saveThumbnail(thumbnail);
+
     const { rows: createBookData } = await pg.query(
       `
       INSERT INTO
         books(
           "title",
-          "description"
+          "description",
+          "thumbnail"
         )
-      VALUES ($1, $2)
-      RETURNING "title", "description"
+      VALUES ($1, $2, $3)
+      RETURNING "title", "description", "thumbnail"
       `,
-      [title, description],
+      [title, description, imageUrl],
     );
 
     return createBookData[0];

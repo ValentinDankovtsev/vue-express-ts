@@ -1,4 +1,4 @@
-import {  IsString, IsNotEmpty } from 'class-validator';
+import {IsString, IsNotEmpty} from 'class-validator';
 
 export class CreateBookDto {
   @IsNotEmpty()
@@ -8,6 +8,8 @@ export class CreateBookDto {
   @IsNotEmpty()
   @IsString()
   public description: string;
+
+  public thumbnail: string;
 }
 
 export class UpdateBookDto {
