@@ -1,10 +1,9 @@
-import { NextFunction, Response } from 'express';
-import { verify } from 'jsonwebtoken';
-import { SECRET_KEY } from '@config';
+import {NextFunction, Response} from 'express';
+import {verify} from 'jsonwebtoken';
+import {SECRET_KEY} from '@config';
 import pg from '@database';
-import { HttpException } from '@exceptions/httpException';
-import { DataStoredInToken, RequestWithUser } from '@interfaces/auth.interface';
-import { log } from 'winston';
+import {HttpException} from '@exceptions/httpException';
+import {DataStoredInToken, RequestWithUser} from '@interfaces/auth.interface';
 
 const getAuthorization = req => {
   const cookie = req.cookies['Authorization'];
@@ -21,36 +20,33 @@ export const AuthMiddleware = async (req: RequestWithUser, res: Response, next: 
     const Authorization = getAuthorization(req);
 
     if (Authorization) {
-      const decode = (await verify(Authorization, SECRET_KEY)) as DataStoredInToken;
-      if(decode) {
+      const {id} = (await verify(Authorization, SECRET_KEY)) as DataStoredInToken;
+
+      const {rows, rowCount} = await pg.query(
+        `
+  SELECT
+    "id",
+    "email",
+    "password"
+  FROM
+    users
+  WHERE
+    "id" = $1
+  `,
+        [id]
+      );
+
+
+      if (rowCount) {
+        req.user = rows[0];
         next();
       } else {
-        next(new HttpException(401, [{ auth: ['Wrong authentication token'] }]))
+        next(new HttpException(401, [{auth: ["Wrong authentication token"]}]));
       }
-
-      // const { rows, rowCount } = await pg.query(
-      //   `
-      //   SELECT
-      //     "email",
-      //     "password"
-      //   FROM
-      //     users
-      //   WHERE
-      //     "id" = $1
-      // `,
-      //   id,
-      // );
-      //
-      // if (rowCount) {
-      //   req.user = rows[0];
-      //   next();
-      // } else {
-      //   next(new HttpException(401, [{ auth: ['Wrong authentication token'] }]));
-      // }
     } else {
-      next(new HttpException(404, [{ auth: ['Authentication token missing'] }]));
+      next(new HttpException(404, [{auth: ["Authentication token missing"]}]));
     }
   } catch (error) {
-    next(new HttpException(401, [{ auth: ['Wrong authentication token'] }]));
+    next(new HttpException(401, [{auth: ["Wrong authentication token"]}]));
   }
 };

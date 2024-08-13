@@ -3,7 +3,6 @@
   [key: string]: string[];
 };
 
-
 export class HttpException extends Error {
   public status: number;
   public errors: ErrorDetail[];
