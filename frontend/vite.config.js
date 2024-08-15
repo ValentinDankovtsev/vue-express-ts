@@ -6,7 +6,7 @@ const { parsed: config = {} } = dotenv.config()
 
 export default defineConfig({
   plugins: [vue()],
-  publicDir: false,
+  publicDir: true,
   root: process.cwd() + '/',
   resolve: {
     alias: [
@@ -20,13 +20,13 @@ export default defineConfig({
       // }
     ]
   },
-  server: {
-    port: config.PORT,
-    proxy: {
-      '^/(api|images|webfonts|favicon)': {
-        target: `http://localhost:${config.PORT}`,
-        changeOrigin: true
-      }
-    }
-  }
+  // server: {
+  //   port: config.PORT_DEV_FE,
+  //   proxy: {
+  //     '^/(api|images|webfonts|favicon)': {
+  //       target: `http://localhost:${config.PORT}`,
+  //       changeOrigin: true
+  //     }
+  //   }
+  // }
 })

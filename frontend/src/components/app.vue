@@ -1,29 +1,53 @@
-<script setup lang="ts">
-import HelloWorld from '@/components/HelloWorld.vue'
-</script>
-
 <template>
-  <div>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="../assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <TheHeader />
+
+  <div class="wrapper__content">
+    <RouterView v-if="state.hasInitialized" />
   </div>
-  <HelloWorld msg="Vite + Vue" />
+
+  <TheModals />
+  <TheFooter />
+  <TheNotifications />
+<!--  <ConfirmationModal />-->
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+<script lang="ts" setup>
+import { provide, reactive } from 'vue'
+// import { ExampleModuleKey, useExample } from '@/modules/example'
+import { useTheSession } from '@/modules/session'
+import TheModals from './singles/the-modals.vue'
+import TheNotifications from './singles/the-notifications.vue'
+import TheFooter from './singles/the-footer.vue'
+import TheHeader from './singles/the-header.vue'
+// import ConfirmationModal from './shared/confirmation-modal.vue'
+
+const state = reactive({
+  hasInitialized: false
+})
+
+const session = useTheSession()
+
+// const example = useExample()
+// example.message.value = 'This is an example of using a provide/inject pattern.'
+// provide(ExampleModuleKey, example)
+
+async function initialize() {
+  calculateAppHeight()
+  window.addEventListener('resize', calculateAppHeight)
+
+  await session.load()
+
+  state.hasInitialized = true
 }
 
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+function calculateAppHeight() {
+  document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`)
 }
 
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+initialize()
+</script>
+
+<style lang="sass">
+@import '../../styles/font-awesome.css'
+@import '../../styles/index'
 </style>

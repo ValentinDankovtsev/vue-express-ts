@@ -1,5 +1,20 @@
 import { createApp } from 'vue'
-import './style.css'
+import router from '@/router'
 import App from '@/components/app.vue'
+import entrapFocus from '@/directives/entrap-focus'
 
-createApp(App).mount('#app')
+const vm = createApp(App)
+
+// Directives:
+
+vm.directive('entrapFocus', entrapFocus)
+
+// Plugins:
+
+vm.use(router)
+
+// Mount:
+
+vm.mount('#app')
+
+export default vm
