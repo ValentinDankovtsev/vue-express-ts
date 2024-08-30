@@ -8,7 +8,7 @@
   <TheModals />
   <TheFooter />
   <TheNotifications />
-<!--  <ConfirmationModal />-->
+  <ConfirmationModal />
 </template>
 
 <script lang="ts" setup>
@@ -19,7 +19,7 @@ import TheModals from './singles/the-modals.vue'
 import TheNotifications from './singles/the-notifications.vue'
 import TheFooter from './singles/the-footer.vue'
 import TheHeader from './singles/the-header.vue'
-// import ConfirmationModal from './shared/confirmation-modal.vue'
+import ConfirmationModal from './shared/ConfirmationModal.vue'
 
 const state = reactive({
   hasInitialized: false

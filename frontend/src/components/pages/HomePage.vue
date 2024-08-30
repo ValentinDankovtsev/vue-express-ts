@@ -33,16 +33,19 @@
               <div class="layout layout--hz layout--j-start">
                 <RouterLink
                   class="button"
+                  :to="{
+                    name: 'signIn'
+                  }"
                 >
                   Sign In
                 </RouterLink>
 
-                <RouterLink
-                  class="button button--secondary"
+<!--                <RouterLink-->
+<!--                  class="button button&#45;&#45;secondary"-->
 
-                >
-                  Register
-                </RouterLink>
+<!--                >-->
+<!--                  Register-->
+<!--                </RouterLink>-->
               </div>
             </template>
           </div>

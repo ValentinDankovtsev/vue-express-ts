@@ -26,7 +26,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import Modal from './modal.vue'
+import Modal from './Modal.vue'
 import { useErrors } from '@/modules/errors'
 import { useTheModals } from '@/modules/modals'
 
